@@ -17,9 +17,9 @@ final class ResultViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.hidesBackButton = true
+        navigationItem.hidesBackButton = true
     
-        whichAnimal()
+        getAnimal()
         
     }
     
@@ -31,34 +31,53 @@ final class ResultViewController: UIViewController {
         print("ResultViewController is deallocated")
     }
     
-    private func whichAnimal() {
-        
-        var dogCount = 0
-        var catCount = 0
-        var rabitCount = 0
-        var turtleCount = 0
-        
-        for answer in answersChosen {
-            switch answer.animal {
-            case .dog: dogCount += 1
-            case .cat: catCount += 1
-            case .rabbit: rabitCount += 1
-            default: turtleCount += 1
+    private func getAnimal() {
+//
+//        var dogCount = 0
+//        var catCount = 0
+//        var rabitCount = 0
+//        var turtleCount = 0
+//
+//        for answer in answersChosen {
+//            switch answer.animal {
+//            case .dog: dogCount += 1
+//            case .cat: catCount += 1
+//            case .rabbit: rabitCount += 1
+//            default: turtleCount += 1
+//            }
+//
+//        }
+//
+//        let max = dogCount
+//
+//        if max < catCount {
+//            animalResult(animal: .cat)
+//        } else if max < rabitCount {
+//            animalResult(animal: .rabbit)
+//        } else if max < turtleCount {
+//            animalResult(animal: .turtle)
+//        } else {
+//            animalResult(animal: .dog)
+//        }
+        var animal = [Animal: Int]()
+        for chosen in answersChosen {
+            if let count = animal[chosen.animal]{
+                animal.updateValue(count + 1, forKey: chosen.animal)
+            } else {
+                animal[chosen.animal] = 1
             }
-            
         }
         
-        let max = dogCount
+        var max = 0
+        var anim: Animal!
         
-        if max < catCount {
-            animalResult(animal: .cat)
-        } else if max < rabitCount {
-            animalResult(animal: .rabbit)
-        } else if max < turtleCount {
-            animalResult(animal: .turtle)
-        } else {
-            animalResult(animal: .dog)
+        for (animal, count) in animal {
+            if max < count {
+                max = count
+                anim = animal
+            }
         }
+        animalResult(animal: anim)
     }
     
     private func animalResult(animal: Animal){
